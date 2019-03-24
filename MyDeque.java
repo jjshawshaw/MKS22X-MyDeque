@@ -32,9 +32,7 @@ public class MyDeque<E>{
     return out;
   }
 
-  private void resize(){
-
-  }
+  
   public String toString(){
     String out = "{";
     if (start < end){
@@ -56,7 +54,7 @@ public class MyDeque<E>{
   }
 
   public void addFirst(E element){
-    System.out.println("adding " + element);
+    if (element == null) throw new NullPointerException();
     if (size == data.length){
       E[] d = (E[]) new Object[data.length * 2 + 1];
       d[0] = element;
@@ -88,11 +86,10 @@ public class MyDeque<E>{
       size++;
       data[start] = element;
     }
-    System.out.println (this + " \n");
   }
 
   public void addLast(E element){
-    System.out.println("adding " + element);
+    if (element == null) throw new NullPointerException();
     if (size == data.length){
       E[] d = (E[]) new Object[data.length * 2 + 1];
       int i = 0;
@@ -122,12 +119,33 @@ public class MyDeque<E>{
     }
     data[end] = element;
     size++;
-    System.out.println(this + " \n");
    }
-  //public E removeFirst(){ }
-  //public E removeLast(){ }
-  //public E getFirst(){ }
-  //public E getLast(){ }
+  public E removeFirst(){
+    if (size == 0) throw new NoSuchElementException();
+    E out = data[start];
+    data[start] = null;
+    size--;
+    start++;
+    if (start == data.length) start = 0;
+    return out;
+  }
+  public E removeLast(){
+    if (size == 0) throw new NoSuchElementException();
+    E out = data[end];
+    data[start] = null;
+    size--;
+    end--;
+    if (end < 0) end = data.length - 1;
+    return out;
+   }
+  public E getFirst(){
+    if (size == 0) throw new NoSuchElementException();
+    return data[start];
+  }
+  public E getLast(){
+    if (size == 0) throw new NoSuchElementException();
+    return data[end];
+  }
   public static void main(String[] args){
       MyDeque<Integer> d = new MyDeque<Integer>(4);
       //System.out.println(d);
@@ -137,6 +155,10 @@ public class MyDeque<E>{
       for (int i = 1; i < 11; i++){
         d.addFirst(-i);
       }
+      System.out.println(d);
+      d.removeFirst();
+      System.out.println(d);
+      d.removeLast();
       System.out.println(d);
     }
 }
