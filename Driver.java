@@ -5,6 +5,9 @@ public class Driver {
     for (int i = 1; i < 11; i++){
       d.addLast(i);
     }
+    for (int i = 1; i < 11; i++){
+      d.addFirst(999);
+    }
     System.out.println(d);
   }
 }

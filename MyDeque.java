@@ -17,69 +17,126 @@ public class MyDeque<E>{
     end = 0;
     size = 0;
   }
+
   public int size(){
     return size;
   }
-  public String toString(){
+
+  public String toString1(){
     String out = "";
     for (int i = 0; i < data.length; i++){
       if (data[i] == null) out += "null, ";
       else out += data[i] + ", ";
     }
-    out += "\n start: " + start + " end: " + end;
+    out += "\n start: " + start + " end: " + end + " size: " + size + " len: " + data.length;
     return out;
   }
-  public void addFirst(E element){
-    if (start == size){
-      E[] d = (E[]) new Object[data.length * 2];
-      int i = 0;
-      for (int di = start; di < data.length && di < end; di++){
-        d[i] = data[di];
-        i++;
-      }
-      for (int di = 0; di < end && di < start; di++){
-        d[i] = data[di];
-        i++;
+
+  private void resize(){
+
+  }
+  public String toString(){
+    String out = "{";
+    if (start < end){
+      for (int di = start; di <= end; di++){
+        out += data[di] + "";
+        if (di != end) out += ", ";
       }
     }
+    else {
+      for (int di = start; di < data.length; di++){
+        out += data[di] + ", ";
+      }
+      for (int di = 0; di <= end; di++){
+        out += data[di] + "";
+        if (di != end) out += ", ";
+      }
+    }
+    return out + "}";
   }
-  public void addLast(E element){
-    if (size > 0) end++;
-    System.out.println(this);
+
+  public void addFirst(E element){
     System.out.println("adding " + element);
     if (size == data.length){
-      System.out.println("resizing: " + data.length + " to " + data.length * 2);
-      E[] d = (E[]) new Object[data.length * 2];
-      int i = 0;
-      for (int di = start; di < data.length && di <= end; di++){
-        System.out.println("di: " + di + " i: " + i + " num: " + data[di]
-        + "start: " + start + " end: " + end + " len: " + data.length);
-        d[i] = data[di];
-        i++;
+      E[] d = (E[]) new Object[data.length * 2 + 1];
+      d[0] = element;
+      int i = 1;
+      if (start < end){
+        for (int di = start; di <= end; di++){
+          d[i] = data[di];
+          i++;
+        }
       }
-      for (int di = 0; di <= end && di < start; di++){
-        System.out.println(data[di]);
-        d[i] = data[di];
-        i++;
+      else {
+        for (int di = start; di < data.length; di++){
+          d[i] = data[di];
+          i++;
+        }
+        for (int di = 0; di <= end; di++){
+          d[i] = data[di];
+          i++;
+        }
+      }
+      start = 0;
+      end = data.length;
+      data = d;
+      size++;
+    }
+    else{
+      start--;
+      if (start < 0) start = data.length - 1;
+      size++;
+      data[start] = element;
+    }
+    System.out.println (this + " \n");
+  }
+
+  public void addLast(E element){
+    System.out.println("adding " + element);
+    if (size == data.length){
+      E[] d = (E[]) new Object[data.length * 2 + 1];
+      int i = 0;
+      if (start < end){
+        for (int di = start; di <= end; di++){
+          d[i] = data[di];
+          i++;
+        }
+      }
+      else {
+        for (int di = start; di < data.length; di++){
+          d[i] = data[di];
+          i++;
+        }
+        for (int di = 0; di <= end; di++){
+          d[i] = data[di];
+          i++;
+        }
       }
       start = 0;
       end = data.length;
       data = d;
     }
+    else{
+      if (size > 0) end++;
+      if (end == data.length) end = 0;
+    }
     data[end] = element;
-    if (end == data.length) end = 0;
     size++;
+    System.out.println(this + " \n");
    }
   //public E removeFirst(){ }
   //public E removeLast(){ }
   //public E getFirst(){ }
   //public E getLast(){ }
   public static void main(String[] args){
-    MyDeque<Integer> d = new MyDeque<Integer>(4);
-    //System.out.println(d);
-    for (int i = 1; i < 11; i++){
-      d.addLast(i);
+      MyDeque<Integer> d = new MyDeque<Integer>(4);
+      //System.out.println(d);
+      for (int i = 1; i < 11; i++){
+        d.addLast(i);
+      }
+      for (int i = 1; i < 11; i++){
+        d.addFirst(-i);
+      }
+      System.out.println(d);
     }
-    System.out.println(d);
-  }
 }
