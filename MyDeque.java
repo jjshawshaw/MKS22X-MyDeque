@@ -32,22 +32,28 @@ public class MyDeque<E>{
     return out;
   }
 
-  
+
   public String toString(){
     String out = "{";
-    if (start < end){
+    if (start <= end){
       for (int di = start; di <= end; di++){
-        out += data[di] + "";
-        if (di != end) out += ", ";
+        if (data[di] != null){
+          out += data[di] + "";
+          if (di != end) out += ", ";
+        }
       }
     }
     else {
       for (int di = start; di < data.length; di++){
-        out += data[di] + ", ";
+        if (data[di] != null){
+          out += data[di] + ", ";
+        }
       }
       for (int di = 0; di <= end; di++){
-        out += data[di] + "";
-        if (di != end) out += ", ";
+        if (data[di] != null){
+          out += data[di] + "";
+          if (di != end) out += ", ";
+        }
       }
     }
     return out + "}";
@@ -132,7 +138,7 @@ public class MyDeque<E>{
   public E removeLast(){
     if (size == 0) throw new NoSuchElementException();
     E out = data[end];
-    data[start] = null;
+    data[end] = null;
     size--;
     end--;
     if (end < 0) end = data.length - 1;
