@@ -36,24 +36,18 @@ public class MyDeque<E>{
   public String toString(){
     String out = "{";
     if (start <= end){
-      for (int di = start; di <= end; di++){
-        if (data[di] != null){
+      for (int di = start; di <= end && size > 0; di++){
           out += data[di] + "";
           if (di != end) out += ", ";
-        }
       }
     }
     else {
-      for (int di = start; di < data.length; di++){
-        if (data[di] != null){
+      for (int di = start; di < data.length && size > 0; di++){
           out += data[di] + ", ";
-        }
       }
-      for (int di = 0; di <= end; di++){
-        if (data[di] != null){
+      for (int di = 0; di <= end && size > 0; di++){
           out += data[di] + "";
           if (di != end) out += ", ";
-        }
       }
     }
     return out + "}";
@@ -84,14 +78,14 @@ public class MyDeque<E>{
       start = 0;
       end = data.length;
       data = d;
-      size++;
     }
     else{
-      start--;
+      if (size > 0) start--;
+      else start = end;
       if (start < 0) start = data.length - 1;
-      size++;
       data[start] = element;
     }
+    size++;
   }
 
   public void addLast(E element){
@@ -121,6 +115,7 @@ public class MyDeque<E>{
     }
     else{
       if (size > 0) end++;
+      else end = start;
       if (end == data.length) end = 0;
     }
     data[end] = element;
