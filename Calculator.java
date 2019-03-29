@@ -4,28 +4,29 @@ public class Calculator{
      *Assume valid postfix notation, separated by spaces.
      */
     public static double eval(String s){
-      MyDeque<Double> nums = new MyDeque<Double>();
-      MyDeque<String> ops = new MyDeque<String>();
-      tokenize(s, nums, ops);
-      System.out.println(nums);
-      System.out.println(ops);
-      return 0;
-    }
-
-    public static void tokenize(String s, MyDeque<Double> nums, MyDeque<String> ops){
+      System.out.println(s);
       String[] split = s.split(" ");
-      for (String val : split){
-        try {
-          int i = Double.parseInt(val);
-          nums.addLast(i);
-        }
-        catch(Exception e){
-          ops.addLast(val);
+      MyDeque<Double> vals = new MyDeque<Double>();
+      for(String nextval : split){
+        if (nextval.equals("+")) {
+          vals.addLast(vals.removeLast() + vals.removeLast());
+        } else if (nextval.equals("-")) {
+          vals.addLast(- vals.removeLast() + vals.removeLast());
+        } else if (nextval.equals("*")) {
+          vals.addLast(vals.removeLast() * vals.removeLast());
+        } else if (nextval.equals("/")) {
+          vals.addLast(1 / vals.removeLast() * vals.removeLast());
+        } else if (nextval.equals("%")) {
+          vals.addLast(vals.removeLast() % vals.removeLast());
+        } else {
+          vals.addLast(Double.parseDouble(nextval));
         }
       }
+      return vals.getLast();
     }
 
+
     public static void main(String[] args){
-      Calculator("1 2 3 4 5 + * - -");
+      System.out.println(eval("1 2 3 4 5 + * - -"));
     }
   }
